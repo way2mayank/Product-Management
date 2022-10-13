@@ -19,56 +19,7 @@ const {
 
 
 
-// const product = async function (req, res) {
-//     let data = req.body
-//     let { title, description,
-//         price, currencyId,
-//         currencyFormat, isFreeShipping,
-//         productImage, style,
-//         availableSizes,
-//     } = data
 
-//     if (!isValidRequestBody(data))
-//         return res.status(400).send({ status: false, msg: "please provide  details" })
-
-
-//     if (!title) return res.status(400).send({ status: false, message: "title is required" })
-
-
-//     if (!description) return res.status(400).send({ status: false, message: "description is required" })
-
-
-//     if (!price) return res.status(400).send({ status: false, message: "price is required" })
-
-//     if (!currencyId) return res.status(400).send({ status: false, message: "currencyId is required" })
-//     if (currencyId != "INR") return res.status(400).send({ status: false, message: "currencyId formrt is INR" })
-
-//     if (!currencyFormat) return res.status(400).send({ status: false, message: "currencyFormat is required" })
-//     if (currencyFormat != "₹") return res.status(400).send({ status: false, message: "currencyFormat should be in :  ₹" })
-
-//     if (!isFreeShipping) return res.status(400).send({ status: false, message: "isFreeShipping is required" })
-
-
-//     //if (!productImage) return res.status(400).send({ status: false, message: "productImage is required" })
-//     if (productImage) {
-//         let file = req.files
-
-//         if (file && file.length > 0) {
-//             //upload to s3 and get the uploaded link
-//             // res.send the link back to frontend/postman
-//             let uploadedFileURL = await uploadFile(file[0])
-
-//             data['productImage'] = uploadedFileURL
-
-//         }
-//     }
-
-//     if (!style) return res.status(400).send({ status: false, message: "style is required" })
-
-//     if (!availableSizes) return res.status(400).send({ status: false, message: "availableSizes is required" })
-//     let product = await productModel.create( data )
-//     return res.status(201).send({ status: false, data: product })
-// }
 
 let createProduct = async function (req, res) {
   try {
