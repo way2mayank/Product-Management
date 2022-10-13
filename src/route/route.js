@@ -1,10 +1,26 @@
-const express= require("express")
-const router= express.Router()
-const {createUser}= require("../controller/userController")
+const express = require("express")
+const router = express.Router()
+const mid = require("../middleware/auth")
+const { createUser,
+    updateUser,
+    loginUser,
+    getUserDetails
+} = require("../controller/userController")
+
+const { createProduct, deleteProduct } = require("../controller/productController")
 
 
-router.post("/user",createUser)
+//=================USER=============================
+router.post("/user", createUser)
+router.post("/login", loginUser)
+router.get("/user/:userId/profile", mid.authentication, getUserDetails)
+router.put("/user/:userId/profile", mid.authentication, mid.authorization, updateUser)
+
+//=================PRODUCT=============================
+
+router.post("/product", createProduct)
+router.delete("/products/:productId",deleteProduct)
 
 
 
-module.exports=router
+module.exports = router
