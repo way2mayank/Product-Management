@@ -16,12 +16,6 @@ const {
 
 
 
-
-
-
-
-
-
 let createProduct = async function (req, res) {
   try {
 
@@ -73,16 +67,6 @@ let createProduct = async function (req, res) {
 
 }
 
-
-// <!-- GET /products -->
-// Filters
-// Size (The key for this filter will be 'size')
-// Product name (The key for this filter will be 'name'). You should return all the products with name containing the substring recieved in this filter
-// Price : greater than or less than a specific value. The keys are 'priceGreaterThan' and 'priceLessThan'.
-// NOTE: 
-// SortFor price filter request could contain both or any one of the keys. For example the query in the request could look like { priceGreaterThan: 500, priceLessThan: 2000 } or just { priceLessThan: 1000 } )
-
-// Sorted by product price in ascending or descending. The key value pair will look like {priceSort : 1} or {priceSort : -1}
 
 let productDetail = async function (req, res) {
   try {
