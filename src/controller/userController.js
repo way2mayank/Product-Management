@@ -24,6 +24,7 @@ const createUser = async function (req, res) {
     try {
         let data = req.body;
         let { fname, lname, email, password, phone, address, profileImage } = data
+         profileImage = req.files
 
 
         if (!isValidRequestBody(data))
@@ -104,15 +105,16 @@ const createUser = async function (req, res) {
                 return res.status(400).send({ status: false, message: "PIN code should contain 6 digits only " })
         }
 
-        let file = req.files
-        if (file && file.length > 0) {
+        if(profileImage.length==0) return res.status(404).send("hi")
+        if(profileImage.length>0) {
+        if (profileImage && profileImage.length > 0) {
             //upload to s3 and get the uploaded link
             // res.send the link back to frontend/postman
-            let uploadedFileURL = await uploadFile(file[0])
+            let uploadedFileURL = await uploadFile(profileImage[0])
 
             data['profileImage'] = uploadedFileURL
 
-        }
+        }}
 
         const saltRounds = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, saltRounds)

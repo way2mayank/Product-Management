@@ -50,4 +50,13 @@ const isValidPassword=function(value){
         return true
 }
 
+// const validSize= function(value){
+//     let arr = ["S", "XS", "M", "X", "L", "XXL", "XL"]
+//     for(let i=0;i<arr.length;i++){
+//         if(arr[i]==value) return true
+//     }
+//     return false
+// }
+
+
 module.exports = { isValid, isValidEmail, isValidNumber, isValidRequestBody, isValidObjectId, isValidPincode,isValidPassword,nameFormet }

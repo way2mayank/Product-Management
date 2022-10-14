@@ -7,7 +7,7 @@ const { createUser,
     getUserDetails
 } = require("../controller/userController")
 
-const { createProduct, deleteProduct } = require("../controller/productController")
+const { createProduct, deleteProduct, productDetail } = require("../controller/productController")
 
 
 //=================USER=============================
@@ -19,8 +19,12 @@ router.put("/user/:userId/profile", mid.authentication, mid.authorization, updat
 //=================PRODUCT=============================
 
 router.post("/product", createProduct)
+router.get("/products",productDetail)
 router.delete("/products/:productId",deleteProduct)
 
 
+router.all("/*", function (req, res) {
+    res.status(400).send({status: false, message: "Make Sure Your Endpoint is Correct !!!"})
+})
 
 module.exports = router
