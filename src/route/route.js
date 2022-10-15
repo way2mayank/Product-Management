@@ -7,7 +7,7 @@ const { createUser,
     getUserDetails
 } = require("../controller/userController")
 
-const { createProduct, deleteProduct, productDetail } = require("../controller/productController")
+const { createProduct, deleteProduct, productDetail, updateProduct } = require("../controller/productController")
 
 
 //=================USER=============================
@@ -20,6 +20,7 @@ router.put("/user/:userId/profile", mid.authentication, mid.authorization, updat
 
 router.post("/product", createProduct)
 router.get("/products",productDetail)
+router.put("/products/:productId",updateProduct)
 router.delete("/products/:productId",deleteProduct)
 
 

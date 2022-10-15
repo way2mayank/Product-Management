@@ -224,7 +224,9 @@ Returns product details by product id
 Response format
 On success - Return HTTP status 200. Also return the product documents. The response should be a JSON object like this
 On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object like this
-PUT /products/:productId
+
+
+<!-- PUT /products/:productId -->
 Updates a product by changing at least one or all fields
 Check if the productId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like this
 Response format

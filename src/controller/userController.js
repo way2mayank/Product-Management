@@ -20,11 +20,11 @@ const {
 
 
 
-const createUser = async function (req, res) { 
+const createUser = async function (req, res) {
     try {
         let data = req.body;
         let { fname, lname, email, password, phone, address, profileImage } = data
-         profileImage = req.files
+        files = req.files
 
 
         if (!isValidRequestBody(data))
@@ -105,16 +105,17 @@ const createUser = async function (req, res) {
                 return res.status(400).send({ status: false, message: "PIN code should contain 6 digits only " })
         }
 
-        if(profileImage.length==0) return res.status(404).send("hi")
-        if(profileImage.length>0) {
-        if (profileImage && profileImage.length > 0) {
-            //upload to s3 and get the uploaded link
-            // res.send the link back to frontend/postman
-            let uploadedFileURL = await uploadFile(profileImage[0])
+        if (files.length == 0) return res.status(404).send("hi")
+        if (files.length > 0) {
+            if (files && files.length > 0) {
+                //upload to s3 and get the uploaded link
+                // res.send the link back to frontend/postman
+                let uploadedFileURL = await uploadFile(files[0])
 
-            data['profileImage'] = uploadedFileURL
+                data['profileImage'] = uploadedFileURL
 
-        }}
+            }
+        }
 
         const saltRounds = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(password, saltRounds)
@@ -127,8 +128,7 @@ const createUser = async function (req, res) {
     }
 
     catch (err) {
-        console.log("This is the error :", err.message)
-        res.status(500).send({ msg: "Error", error: err.message })
+        return res.status(500).send({ msg: "Error", error: err.message })
     }
 }
 

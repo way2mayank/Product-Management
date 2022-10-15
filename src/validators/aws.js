@@ -26,9 +26,9 @@ let uploadFile = async (file) => {
             if (err) {
                 return reject({ "error": err })
             }
-        console.log(uploadParams.Body)
+        // console.log(uploadParams.Body)
 
-            console.log(data.Location)
+            // console.log(data.Location)
             return resolve(data.Location)
         })
 
