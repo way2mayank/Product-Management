@@ -45,16 +45,19 @@ const createProduct = async (req, res) => {
     if (!/^[0-9 .]+$/.test(price))
       return res.status(400).send({ status: false, message: "price must be in numeric" })
 
-    if (currencyId && currencyId !== "INR")
+   
+
+      if (currencyId && currencyId !== "INR")
       return res.status(400).send({ status: false, message: "enter INR currency only" });
 
     if (currencyFormat && currencyFormat !== "₹")
       return res.status(400).send({ status: false, message: "enter indian currency format i.e '₹' " });
 
 
+
     // if (!isValid(availableSizes))
     //   return res.status(400).send({ status: false, message: "avilableSizes is required" })
-    if (availableSizes) {
+if (availableSizes) {
       availableSizes = availableSizes.toUpperCase()
       let size = availableSizes.split(',').map(x => x.trim())
 
@@ -62,7 +65,8 @@ const createProduct = async (req, res) => {
         if (!(["S", "XS", "M", "X", "L", "XXL", "XL"].includes(size[i]))) return res.status(400).send({ status: false, message: `availableSizes should have only these Sizes ['S' || 'XS'  || 'M' || 'X' || 'L' || 'XXL' || 'XL']` })
 
       }
-    }
+      data.availableSizes=size
+    }    
     // if (!validSize(availableSizes)) return res.status(400).send({ status: false, message: "size contain only ( S, XS, M, X, L, XXL, XL ) " })
 
     if (installments)
@@ -74,7 +78,7 @@ const createProduct = async (req, res) => {
     if (files && files.length > 0) {
       let uploadedFileURL = await uploadFile(files[0])
 
-      data['profileImage'] = uploadedFileURL
+      data['productImage'] = uploadedFileURL
 
     }
 
@@ -153,7 +157,7 @@ let productDetail = async function (req, res) {
     //if (!Object.keys(products)>=0) return res.status(400).send({ status: false, message: "no data found" })
     return res.status(200).send({ status: true, message: 'Success', count: products.length, data: products })
   } catch (error) {
-
+    return res.status(500).send({ status: false, message: error.message })
   }
 }
 
