@@ -92,6 +92,9 @@ const createUser = async function (req, res) {
 
 
             //=============ADDRESS-SHIPPING==================
+
+            if(!data.address.billing) return res.status(400).send({status:false, message:"can't empty billing.street"})
+
             if (!isValid(data.address.billing.street))
                 return res.status(400).send({ status: false, message: "street field is required or not valid" })
 
@@ -105,7 +108,7 @@ const createUser = async function (req, res) {
                 return res.status(400).send({ status: false, message: "PIN code should contain 6 digits only " })
         }
 
-        if (files.length == 0) return res.status(404).send("hi")
+        if (files.length == 0) return res.status(404).send({status:false, message:""})
         if (files.length > 0) {
             if (files && files.length > 0) {
                 //upload to s3 and get the uploaded link
@@ -290,7 +293,7 @@ const updateUser = async function (req, res) {
                 data.address.shipping.pincode = address.shipping.pincode
             }
 
-            //=============ADDRESS-SHIPPING==================
+            //=============ADDRESS-BILLING==================
             if (address.billing) {
                 if (!isValid(data.address.billing.street))
                     return res.status(400).send({ status: false, message: "street field is required or not valid" })
@@ -305,7 +308,7 @@ const updateUser = async function (req, res) {
 
                 if (!isValidPincode(data.address.billing.pincode))
                     return res.status(400).send({ status: false, message: "PIN code should contain 6 digits only " })
-                data.address.billing.pincode = dress.billing.pincode
+                data.address.billing.pincode = address.billing.pincode
             } ad
         }
 
