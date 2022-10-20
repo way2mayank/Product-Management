@@ -1,31 +1,42 @@
 const express = require("express")
 const router = express.Router()
 const mid = require("../middleware/auth")
-const { createUser,
-    updateUser,
-    loginUser,
-    getUserDetails
-} = require("../controller/userController")
 
-const { createProduct, deleteProduct, productDetail, updateProduct } = require("../controller/productController")
-const { createCart } = require("../controller/cartController")
-
+const { createUser,updateUser,loginUser,getUserDetails} = require("../controller/userController")
+const { createProduct, deleteProduct, productDetail, updateProduct,getProduct } = require("../controller/productController")
+const { createCart, updateCart, deleteCart, getCart } = require("../controller/cartController")
+const { createOrder, updateOrder }= require("../controller/orderController")
 
 //=================USER=============================
-router.post("/user", createUser)
+router.post("/register", createUser)
 router.post("/login", loginUser)
 router.get("/user/:userId/profile", mid.authentication, getUserDetails)
 router.put("/user/:userId/profile", mid.authentication, mid.authorization, updateUser)
 
-//=================PRODUCT=============================
+// =================PRODUCT=============================
 
-router.post("/product", createProduct)
+router.post("/products", createProduct)
+router.get("/products/:productId",getProduct )
 router.get("/products",productDetail)
 router.put("/products/:productId",updateProduct)
 router.delete("/products/:productId",deleteProduct)
-// cart
+
+
+// =================CART=============================
+
 router.post("/users/:userId/cart",createCart)
-// router.put("/users/:userId/cart",updatecart)
+router.put("/users/:userId/cart",mid.authentication, mid.authorization,updateCart)
+router.delete("/users/:userId/cart",deleteCart)
+router.get("/users/:userId/cart",getCart)
+
+
+// =================ORDER=============================
+
+
+router.post("/users/:userId/orders",mid.authentication, mid.authorization,createOrder)
+router.put("/users/:userId/orders",mid.authentication, mid.authorization,updateOrder)
+
+
 
 router.all("/*", function (req, res) {
     res.status(400).send({status: false, message: "Make Sure Your Endpoint is Correct !!!"})

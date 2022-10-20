@@ -4,7 +4,6 @@ const userModel =require("./userModel")
 const ObjectId= mongoose.Schema.Types.ObjectId
 const cartSchema = new mongoose.Schema(
 
-    // items =[{},{}] items[0].quantity
 {
   userId: {type:ObjectId, ref: "user", required:true, unique:true},
   items:[ {

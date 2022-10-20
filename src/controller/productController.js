@@ -31,7 +31,7 @@ const createProduct = async (req, res) => {
     if (!nameFormet(title))
       return res.status(400).send({ status: false, message: "title should be in alphabetical" });
 
-    let checkTitle = await productModel.findOne({ title });
+    let checkTitle = await productModel.findOne({ title: title });
     if (checkTitle)
       return res.status(400).send({ status: false, msg: "title already exist" });
 
@@ -45,9 +45,9 @@ const createProduct = async (req, res) => {
     if (!/^[0-9 .]+$/.test(price))
       return res.status(400).send({ status: false, message: "price must be in numeric" })
 
-   
 
-      if (currencyId && currencyId !== "INR")
+
+    if (currencyId && currencyId !== "INR")
       return res.status(400).send({ status: false, message: "enter INR currency only" });
 
     if (currencyFormat && currencyFormat !== "₹")
@@ -57,7 +57,7 @@ const createProduct = async (req, res) => {
 
     // if (!isValid(availableSizes))
     //   return res.status(400).send({ status: false, message: "avilableSizes is required" })
-if (availableSizes) {
+    if (availableSizes) {
       availableSizes = availableSizes.toUpperCase()
       let size = availableSizes.split(',').map(x => x.trim())
 
@@ -65,15 +65,15 @@ if (availableSizes) {
         if (!(["S", "XS", "M", "X", "L", "XXL", "XL"].includes(size[i]))) return res.status(400).send({ status: false, message: `availableSizes should have only these Sizes ['S' || 'XS'  || 'M' || 'X' || 'L' || 'XXL' || 'XL']` })
 
       }
-      data.availableSizes=size
-    }    
+      data.availableSizes = size
+    }
     // if (!validSize(availableSizes)) return res.status(400).send({ status: false, message: "size contain only ( S, XS, M, X, L, XXL, XL ) " })
 
     if (installments)
       if (isNaN(installments)) return res.status(400).send({ status: false, message: "installments should be number only" })
 
 
-    //if (files.length == 0) return res.status(404).send({ status: false, message: "please enter profileImage" })
+    if (files.length == 0) return res.status(404).send({ status: false, message: "please enter productImage" })
 
     if (files && files.length > 0) {
       let uploadedFileURL = await uploadFile(files[0])
@@ -84,7 +84,7 @@ if (availableSizes) {
 
 
     let createdproduct = await productModel.create(data)
-    return res.status(201).send({ satus: true, message: "product create successfully", data: createdproduct })
+    return res.status(201).send({ status: true, message: "Success", data: createdproduct })
 
 
   } catch (error) {
@@ -155,11 +155,13 @@ let productDetail = async function (req, res) {
 
     const products = await productModel.find(fdata).sort(sort)
     //if (!Object.keys(products)>=0) return res.status(400).send({ status: false, message: "no data found" })
-    return res.status(200).send({ status: true, message: 'Success', count: products.length, data: products })
+    return res.status(200).send({ status: true, message: 'Success', data: products })
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message })
   }
 }
+
+
 
 const getProduct = async function (req, res) {
   try {
@@ -168,7 +170,7 @@ const getProduct = async function (req, res) {
 
     let productDetails = await productModel.findOne({ _id: productId, isDeleted: false })
     if (!productDetails) return res.status(404).send({ status: false, msg: "document not found" })
-    return res.status(200).send({ status: true, data: productDetails })
+    return res.status(200).send({ status: true, message: "Success", data: productDetails })
   }
   catch (error) {
     return res.status(500).send({ status: false, message: error.message })
@@ -176,16 +178,12 @@ const getProduct = async function (req, res) {
 }
 
 
-// Updates a product by changing at least one or all fields
-// Check if the productId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like this
-// Response format
-// On success - Return HTTP status 200. Also return the updated product document. The response should be a JSON object like this
-// On error - Return a suitable error message with a valid HTTP status code. The response should be a JSON object like this
 
 const updateProduct = async function (req, res) {
   try {
     let productId = req.params.productId;
     let data = req.body;
+    let files = req.files;
 
     if (!isValidObjectId(productId)) return res.status(400).send({ status: false, message: "Invalid productId" })
 
@@ -244,7 +242,7 @@ const updateProduct = async function (req, res) {
     if (installments)
       if (!/^[0-9 ]+$/.test(installments)) return res.status(400).send({ status: false, message: "installments must be in numeric" })
 
-    let files = req.files;
+
     if (files && files.length > 0) {
       let fileUrl = await uploadFile(files[0]);
       data.productImage = fileUrl;

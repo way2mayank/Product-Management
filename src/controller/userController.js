@@ -132,6 +132,13 @@ const createUser = async function (req, res) {
     }
 }
 
+
+
+
+
+
+
+
 const loginUser = async function (req, res) {
     try {
         let data = req.body;
@@ -324,7 +331,7 @@ const updateUser = async function (req, res) {
         }, {
             new: true
         })
-        return res.status(201).send({ status: true, message: "user Updated successfully", data: updatedUser })
+        return res.status(200).send({ status: true, message: "user Updated successfully", data: updatedUser })
 
     }
 
