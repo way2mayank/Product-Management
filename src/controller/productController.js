@@ -1,20 +1,18 @@
 const productModel = require("../model/productModel")
-//const { isValidRequestBody } = require("../validators/validation")
 const mongoose = require("mongoose")
 const { uploadFile } = require('../validators/aws')
 const {
   isValid,
   isValidRequestBody,
   isValidObjectId,
-  nameFormet,
-  validSize
+  nameFormet
 
 } = require("../validators/validation")
 
 
 
 
-const createProduct = async (req, res) => {
+const createProduct = async function(req, res) {
   try {
 
     let data = req.body;
@@ -37,7 +35,7 @@ const createProduct = async (req, res) => {
 
     if (!isValid(description))
       return res.status(400).send({ status: false, message: "description is required." });
-    if (!isValid(description))
+    if (!nameFormet(description))
       return res.status(400).send({ status: false, message: "description should be in alphabetical" });
 
     if (!isValid(price))
@@ -111,16 +109,12 @@ let productDetail = async function (req, res) {
       for (let i = 0; i < size1.length; i++) {
         if (!Size.includes(size1[i])) return res.status(400).send({ status: false, message: "please use correct Size" })
       }
-      // if (!isValid(Size)) return res.status(400).send({ status: false, message: "please use size" })
-      // if (!validSize(Size)) return res.status(400).send({ status: false, message: "size contain only ( S, XS, M, X, L, XXL, XL ) " })
       fdata["availableSizes"] = { $in: size1 }
     }
 
     if (name) {
       name = name.trim()
       if (!isValid(name)) return res.status(400).send({ status: false, message: "use correct formet " })
-      // let findData= await productModel.find()
-      // if(findData.title.includes(name)==true) 
       let regex = new RegExp(name, "i")
       fdata["title"] = { $regex: regex }
     }
@@ -129,7 +123,7 @@ let productDetail = async function (req, res) {
     if (price) {
       let check = JSON.parse(price)
       console.log(check)
-      if (Object.keys(check).length == 0) return res.status(400).send({ status: false, message: 'plz enter price fliter..' })
+      if (Object.keys(check).length == 0) return res.status(400).send({ status: false, message: 'plz enter price filter..' })
 
       if (check.priceGreaterThan) {
         fdata['price'] = { $gt: check.priceGreaterThan }
@@ -144,7 +138,6 @@ let productDetail = async function (req, res) {
       }
 
       console.log(price)
-      // price = JSON.parse(price)
     }
     let sort = {}
 
@@ -154,13 +147,11 @@ let productDetail = async function (req, res) {
     }
 
     const products = await productModel.find(fdata).sort(sort)
-    //if (!Object.keys(products)>=0) return res.status(400).send({ status: false, message: "no data found" })
     return res.status(200).send({ status: true, message: 'Success', data: products })
   } catch (error) {
     return res.status(500).send({ status: false, message: error.message })
   }
 }
-
 
 
 const getProduct = async function (req, res) {
@@ -176,7 +167,6 @@ const getProduct = async function (req, res) {
     return res.status(500).send({ status: false, message: error.message })
   }
 }
-
 
 
 const updateProduct = async function (req, res) {

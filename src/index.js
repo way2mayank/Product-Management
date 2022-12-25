@@ -6,6 +6,8 @@ const app = express()
 
 app.use(express.json())
 app.use(multer().any())
+
+
 mongoose.connect("mongodb+srv://funupdb-first:VxaFh8Uez4zyv95l@cluster0.kizeuyb.mongodb.net/group33Database?retryWrites=true&w=majority", { useNewUrlParser: true })
     .then(() => console.log('mongoDb connected......'))
     .catch((err) => console.log(err))

@@ -20,7 +20,7 @@ const {
 
 
 
-const createUser = async function (req, res) {
+const createUser = async function(req, res) {
     try {
         let data = req.body;
         let { fname, lname, email, password, phone, address, profileImage } = data
@@ -38,7 +38,7 @@ const createUser = async function (req, res) {
 
         if (!isValid(lname))
             return res.status(400).send({ status: false, message: "last name is required or not valid" })
-        if (!nameFormet(fname)) return res.status(404).send({ status: false, message: "lname formet is wrong" })
+        if (!nameFormet(lname)) return res.status(404).send({ status: false, message: "lname formet is wrong" })
 
 
         //============================================EMAIL====================================================
@@ -108,7 +108,7 @@ const createUser = async function (req, res) {
                 return res.status(400).send({ status: false, message: "PIN code should contain 6 digits only " })
         }
 
-        if (files.length == 0) return res.status(404).send({status:false, message:""})
+        if (files.length == 0) return res.status(404).send({status:false, message:"profile image is required"})
         if (files.length > 0) {
             if (files && files.length > 0) {
                 //upload to s3 and get the uploaded link
@@ -134,12 +134,6 @@ const createUser = async function (req, res) {
         return res.status(500).send({ msg: "Error", error: err.message })
     }
 }
-
-
-
-
-
-
 
 
 const loginUser = async function (req, res) {
@@ -182,7 +176,7 @@ const loginUser = async function (req, res) {
     }
 };
 
-const getUserDetails = async function (req, res) {
+const getUserDetails = async function(req, res) {
     try {
         const userId = req.params.userId
         if (!isValidObjectId(userId))
@@ -297,11 +291,11 @@ const updateUser = async function (req, res) {
             if (address.billing) {
                 if (!isValid(data.address.billing.street))
                     return res.status(400).send({ status: false, message: "street field is required or not valid" })
-                data.address.billing.street = address.billing.pincode.street
+                data.address.billing.street = address.billing.street
 
                 if (!isValid(data.address.billing.city))
                     return res.status(400).send({ status: false, message: "city field is required or not valid" })
-                data.address.billing.city = address.billing.pincode.city
+                data.address.billing.city = address.billing.city
 
                 if (!isValid(data.address.billing.pincode))
                     return res.status(400).send({ status: false, message: "pincode field is required or not valid" })
